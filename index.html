@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIP3 Membership Prize Draw</title>
     <style>
+        /* 样式部分 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #3d037b, #b900d2, #0d58e8, #1d76f0); /* Cyberpunk multi-color */
+            background: linear-gradient(135deg, #3d037b, #b900d2, #0d58e8, #1d76f0);
             background-size: 400% 400%;
             animation: gradientAnimation 15s ease infinite;
             color: #fff;
@@ -161,24 +161,6 @@
             color: #e600ff;
         }
 
-        #signaturePad {
-            transform: scale(1);
-            transition: transform 0.5s ease;
-        }
-
-        .signature-confirmed {
-            transform: scale(1.5);
-        }
-
-        /* Loading animation */
-        .loading {
-            font-size: 1.5rem;
-            color: #ff00ff;
-            display: none;
-            margin-top: 30px;
-            text-transform: uppercase;
-        }
-
         /* Fireworks */
         .fireworks {
             position: fixed;
@@ -204,7 +186,6 @@
                 opacity: 1;
             }
         }
-
     </style>
 </head>
 <body>
@@ -298,12 +279,14 @@
         if (!signaturePad.isEmpty()) {
             signatureArea.classList.add('signature-confirmed');
             setTimeout(function () {
-                loading.style.display = "block"; // Show loading animation
+                loading.style.display = "block";
                 setTimeout(() => {
-                    loading.style.display = "none"; // Hide loading animation after 2 seconds
+                    loading.style.display = "none";
                     confirmationMessage.style.display = "block";
                 }, 2000);
             }, 500);
+        } else {
+            alert("Please sign first.");
         }
     }
 
