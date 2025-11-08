@@ -20,9 +20,6 @@
 
         html, body {
             height: 100%;
-        }
-
-        body {
             margin: 0;
             color: #e6f4ff;
             font-family: Inter, system-ui, Segoe UI, Roboto, Arial, sans-serif;
@@ -82,110 +79,24 @@
             text-shadow: 0 0 16px rgba(0, 229, 255, .35);
         }
 
-        .subtitle {
-            margin: 0 0 18px;
-            text-align: center;
-            opacity: .85;
-            font-size: 14px;
-        }
-
-        .gallery {
-            display: grid;
-            gap: 14px;
-            margin: 18px 0 22px;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        }
-
-        .item {
-            position: relative;
-            border-radius: 14px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, .12);
-            background: rgba(255, 255, 255, .03);
-        }
-
-        .thumb {
-            aspect-ratio: 16/10;
-            width: 100%;
-            object-fit: cover;
-            display: block;
-            filter: saturate(1.08) contrast(1.03);
-        }
-
-        .badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, .55);
-            padding: 6px 10px;
-            border-radius: 999px;
-            font-size: 12px;
+        .prizes {
             display: flex;
-            gap: 6px;
-            align-items: center;
-            border: 1px solid rgba(255, 255, 255, .15);
-        }
-
-        .cap {
-            padding: 10px 12px;
-            font-size: 13px;
-            color: #cff8ff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-top: 1px solid rgba(255, 255, 255, .08);
-        }
-
-        .cap .emoji {
-            font-size: 16px;
-        }
-
-        .gate {
-            display: grid;
-            gap: 12px;
-            margin: 10px 0 6px;
-            grid-template-columns: 1fr;
-        }
-
-        .sig-block {
-            background: rgba(255, 255, 255, .04);
-            border: 1px solid rgba(255, 255, 255, .12);
-            border-radius: 12px;
-            padding: 10px;
-        }
-
-        .sig-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            font-size: 13px;
-            opacity: .9;
-        }
-
-        .sig-pad {
-            display: block;
-            width: 100%;
-            height: 140px;
-            background: #0e1525;
-            border-radius: 10px;
-            border: 1px solid rgba(0, 229, 255, .25);
-            box-shadow: inset 0 0 18px rgba(0, 229, 255, .1);
-            touch-action: none;
-        }
-
-        .sig-actions {
-            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            flex-wrap: wrap;
             gap: 10px;
-            margin-top: 8px;
         }
 
-        .agree {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            opacity: .9;
+        .prize-item {
+            text-align: center;
+            flex-basis: 18%;
+            max-width: 250px;
+        }
+
+        .prize-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
         }
 
         .btn {
@@ -207,36 +118,6 @@
 
         .btn:active {
             transform: translateY(1px);
-        }
-
-        .btn.ghost {
-            background: transparent;
-            color: #cfefff;
-            border: 1px solid rgba(255, 255, 255, .2);
-            box-shadow: none;
-        }
-
-        .draw-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 6px;
-        }
-
-        .draw-btn {
-            flex: 1;
-            min-width: 220px;
-            font-size: 16px;
-        }
-
-        .disabled {
-            opacity: .55;
-            cursor: not-allowed;
-            filter: grayscale(.3);
-        }
-
-        .center {
-            text-align: center;
         }
 
         .spinner {
@@ -264,56 +145,6 @@
             border: 1px solid rgba(0, 229, 255, .25);
         }
 
-        .headline {
-            font-size: clamp(18px, 3.8vw, 28px);
-            margin: 0 0 8px;
-            color: var(--gold);
-            font-weight: 800;
-            text-shadow: 0 0 18px rgba(255, 224, 102, .35);
-        }
-
-        .big-preview {
-            width: min(520px, 86vw);
-            aspect-ratio: 16/10;
-            object-fit: cover;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, .18);
-            box-shadow: 0 10px 28px rgba(0, 0, 0, .45);
-            display: block;
-            margin: 12px auto;
-        }
-
-        .desc {
-            margin: 6px 0 0;
-            opacity: .92;
-            font-size: 14px;
-        }
-
-        .confetti {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .confetti i {
-            position: absolute;
-            width: 8px;
-            height: 12px;
-            background: var(--c, #fff);
-            top: -12px;
-            opacity: .9;
-            transform: translateY(-100px) rotate(0);
-            animation: fall linear forwards;
-            border-radius: 2px;
-        }
-
-        @keyframes fall {
-            to {
-                transform: translateY(110vh) rotate(540deg);
-            }
-        }
-
         footer {
             margin-top: 14px;
             text-align: center;
@@ -338,24 +169,24 @@
         <!-- Prize Section -->
         <div class="prizes">
             <div class="prize-item">
-                <img src="data:image/png;base64,{{base64_encoded_image_1}}" alt="Smart Home Set">
-                <h4>Smart Home Set – Make your home smarter and more stylish!</h4>
+                <img src="/mnt/data/抽奖1.jpg" alt="Pixel Watch 2">
+                <h4>Pixel Watch 2</h4>
             </div>
             <div class="prize-item">
-                <img src="data:image/png;base64,{{base64_encoded_image_2}}" alt="British Brand Fashion Accessories">
-                <h4>British Brand Fashion Accessories – Showcase iconic British designs and stand out with exceptional taste!</h4>
+                <img src="/mnt/data/抽奖2.jpg" alt="Pixel 8">
+                <h4>Pixel 8</h4>
             </div>
             <div class="prize-item">
-                <img src="data:image/png;base64,{{base64_encoded_image_3}}" alt="Premium Skincare Sets">
-                <h4>Premium Skincare Sets – Luxurious care that will make you glow every day!</h4>
+                <img src="/mnt/data/抽奖3.jpg" alt="Nest Mini">
+                <h4>Nest Mini</h4>
             </div>
             <div class="prize-item">
-                <img src="data:image/png;base64,{{base64_encoded_image_4}}" alt="Classic British Tea Set">
-                <h4>Classic British Tea Set – Enjoy authentic British tea culture from home!</h4>
+                <img src="/mnt/data/抽奖4.jpg" alt="Google Chromecast">
+                <h4>Google Chromecast</h4>
             </div>
             <div class="prize-item">
-                <img src="data:image/png;base64,{{base64_encoded_image_5}}" alt="Mystery Grand Prize">
-                <h4>Mystery Grand Prize – More surprise gifts to elevate your VIP status!</h4>
+                <img src="/mnt/data/抽奖5.jpg" alt="Nest Hub">
+                <h4>Nest Hub</h4>
             </div>
         </div>
 
