@@ -180,23 +180,23 @@
     <!-- Prize Section -->
     <div class="prizes">
         <div class="prize-item">
-            <img src="data:image/jpeg;base64,{{base64_encoded_image_1}}" alt="Smart Home Set">
+            <img src="data:image/png;base64,{{base64_encoded_image_1}}" alt="Smart Home Set">
             <h4>Smart Home Set – Make your home smarter and more stylish!</h4>
         </div>
         <div class="prize-item">
-            <img src="data:image/jpeg;base64,{{base64_encoded_image_2}}" alt="British Brand Fashion Accessories">
+            <img src="data:image/png;base64,{{base64_encoded_image_2}}" alt="British Brand Fashion Accessories">
             <h4>British Brand Fashion Accessories – Showcase iconic British designs and stand out with exceptional taste!</h4>
         </div>
         <div class="prize-item">
-            <img src="data:image/jpeg;base64,{{base64_encoded_image_3}}" alt="Premium Skincare Sets">
+            <img src="data:image/png;base64,{{base64_encoded_image_3}}" alt="Premium Skincare Sets">
             <h4>Premium Skincare Sets – Luxurious care that will make you glow every day!</h4>
         </div>
         <div class="prize-item">
-            <img src="data:image/jpeg;base64,{{base64_encoded_image_4}}" alt="Classic British Tea Set">
+            <img src="data:image/png;base64,{{base64_encoded_image_4}}" alt="Classic British Tea Set">
             <h4>Classic British Tea Set – Enjoy authentic British tea culture from home!</h4>
         </div>
         <div class="prize-item">
-            <img src="data:image/jpeg;base64,{{base64_encoded_image_5}}" alt="Mystery Grand Prize">
+            <img src="data:image/png;base64,{{base64_encoded_image_5}}" alt="Mystery Grand Prize">
             <h4>Mystery Grand Prize – More surprise gifts to elevate your VIP status!</h4>
         </div>
     </div>
@@ -254,9 +254,9 @@
         signatureArea.style.display = "block";
     }
 
-    // Check the signature pad for input
-    signaturePad.onEnd = function () {
-        confirmSignatureBtn.disabled = !signaturePad.isEmpty();
+    // Enable the Confirm Signature button as soon as the user interacts with the signature area
+    signaturePad.onBegin = function () {
+        confirmSignatureBtn.disabled = false;
     };
 
     // Confirm the signature and proceed
