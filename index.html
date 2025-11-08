@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIP3 Membership Prize Draw</title>
     <style>
-        /* Reset base styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #3d037b, #b900d2, #0d58e8, #1d76f0); /* Cyberpunk multi-color */
@@ -25,7 +25,6 @@
             flex-direction: column;
         }
 
-        /* Gradient Animation */
         @keyframes gradientAnimation {
             0% {background-position: 0% 50%;}
             50% {background-position: 100% 50%;}
@@ -95,7 +94,6 @@
             margin-top: 10px;
         }
 
-        /* Button Styling */
         .button {
             background-color: #e600ff;
             color: white;
@@ -153,7 +151,6 @@
             background-color: #6c757d;
         }
 
-        /* Confirmation Section */
         .confirmation {
             text-align: center;
             font-size: 1.5rem;
@@ -166,7 +163,6 @@
             color: #e600ff;
         }
 
-        /* Signature Scaling */
         #signaturePad {
             transform: scale(1);
             transition: transform 0.5s ease;
@@ -175,6 +171,7 @@
         .signature-confirmed {
             transform: scale(1.5);
         }
+
     </style>
 </head>
 <body>
@@ -185,25 +182,24 @@
     <!-- Prize Section -->
     <div class="prizes">
         <div class="prize-item">
-            <!-- Use actual images uploaded -->
-            <img src="data:image/jpeg;base64,{{base64_image_1}}" alt="Pixel Watch 2">
-            <h4>Pixel Watch 2 – Get smarter with this stylish smartwatch</h4>
+            <img src="file:///mnt/data/抽奖1.jpg" alt="Smart Home Set">
+            <h4>Smart Home Set – Make your home smarter and more stylish!</h4>
         </div>
         <div class="prize-item">
-            <img src="data:image/jpeg;base64,{{base64_image_2}}" alt="Pixel 8">
-            <h4>Pixel 8 – Capture memories with Google's flagship phone</h4>
+            <img src="file:///mnt/data/抽奖2.jpg" alt="British Brand Fashion Accessories">
+            <h4>British Brand Fashion Accessories – Showcase iconic British designs and stand out with exceptional taste!</h4>
         </div>
         <div class="prize-item">
-            <img src="data:image/jpeg;base64,{{base64_image_3}}" alt="Nest Mini">
-            <h4>Nest Mini – Smart speaker to control your home effortlessly</h4>
+            <img src="file:///mnt/data/抽奖3.jpg" alt="Premium Skincare Sets">
+            <h4>Premium Skincare Sets – Luxurious care that will make you glow every day!</h4>
         </div>
         <div class="prize-item">
-            <img src="data:image/jpeg;base64,{{base64_image_4}}" alt="Nest Hub">
-            <h4>Nest Hub – Visual assistant to help you at home</h4>
+            <img src="file:///mnt/data/抽奖4.jpg" alt="Classic British Tea Set">
+            <h4>Classic British Tea Set – Enjoy authentic British tea culture from home!</h4>
         </div>
         <div class="prize-item">
-            <img src="data:image/jpeg;base64,{{base64_image_5}}" alt="Chromecast">
-            <h4>Chromecast – Stream your favorite content to any screen</h4>
+            <img src="file:///mnt/data/抽奖5.jpg" alt="Mystery Grand Prize">
+            <h4>Mystery Grand Prize – More surprise gifts to elevate your VIP status!</h4>
         </div>
     </div>
 
@@ -239,6 +235,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
 <script>
+    // Check if the user has already signed before
+    if (localStorage.getItem("hasSigned") === "true") {
+        document.querySelector('.header').textContent = "You have already completed the draw!";
+        document.querySelector('.prizes').style.display = "none";
+        document.getElementById("confirmBtn").style.display = "none";
+        document.getElementById("confirmationMessage").style.display = "block";
+    }
+
     const signaturePad = new SignaturePad(document.getElementById('signaturePad'));
     const confirmBtn = document.getElementById('confirmBtn');
     const confirmSignatureBtn = document.getElementById('confirmSignatureBtn');
@@ -263,6 +267,7 @@
         if (!signaturePad.isEmpty()) {
             signatureArea.classList.add('signature-confirmed');
             setTimeout(function () {
+                localStorage.setItem("hasSigned", "true"); // Mark that user has signed
                 signatureArea.style.display = "none";
                 confirmationMessage.style.display = "block";
             }, 500);
