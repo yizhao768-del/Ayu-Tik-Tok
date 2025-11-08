@@ -330,6 +330,9 @@
 <div class="confetti" id="confetti"></div>
 
 <script>
+    // Initialize signature logic and button states
+    let isSigned = false;
+
     function startSign() {
         document.getElementById('sign-area').style.display = 'block';
     }
@@ -337,6 +340,7 @@
     function startLottery() {
         const signature = document.getElementById('signature-box').value;
         if (signature.trim()) {
+            isSigned = true;
             document.getElementById('sign-area').style.display = 'none';
             document.getElementById('thank-you').style.display = 'block';
             showConfetti();
@@ -375,6 +379,13 @@
             confettiPiece.style.animationDelay = `${Math.random() * 2}s`;
             confettiPiece.style.left = `${Math.random() * 100}%`;
             confetti.appendChild(confettiPiece);
+        }
+    }
+
+    // Prevent users from signing again
+    window.onload = function() {
+        if (isSigned) {
+            document.getElementById('thank-you').innerHTML = "<h2>You've already completed the lottery!</h2><p>Your prize is an Apple 17 Pro Max-2TB!</p>";
         }
     }
 </script>
