@@ -170,6 +170,41 @@
             transform: scale(1.5);
         }
 
+        /* Loading animation */
+        .loading {
+            font-size: 1.5rem;
+            color: #ff00ff;
+            display: none;
+            margin-top: 30px;
+            text-transform: uppercase;
+        }
+
+        /* Fireworks */
+        .fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zY3JlZW4vU3ZnIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zY3JlZW4vU3ZnIiB3aWR0aD0iMTAwJSIgIGhlaWdodD0iMTAwJSIgZmlsbD0ibm9uZSIgdmlld0JveD0iMCAwIDEwMCAxMDAiPgo8cGF0aCBkPSJNNTAgMTEwQTEyMCAxMjAgMCAwMCAzMCAxMCAxMCAwIHoiIHN0eWxlPSJzdHJva2UtbGluZWNhcGUsIGZpbGw6b3JhbmdlIH0iLz4KPC9zdmc+'); /* Firework effect */
+            animation: fireworks 2s infinite;
+        }
+
+        @keyframes fireworks {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(2);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -211,6 +246,9 @@
         <button class="signature-btn" id="confirmSignatureBtn" onclick="confirmSignature()" disabled>Confirm Signature</button>
     </div>
 
+    <!-- Loading Animation -->
+    <div id="loading" class="loading">Drawing your prize...</div>
+
     <!-- Confirmation Message -->
     <div id="confirmationMessage" class="confirmation">
         <h2>Congratulations! You have won the Mystery Grand Prize: iPhone 17 ProMax - 2TB</h2>
@@ -226,25 +264,21 @@
             <input type="text" id="postcode" placeholder="Enter your postal code"><br><br>
             <label for="phone">Phone Number:</label>
             <input type="text" id="phone" placeholder="Enter your phone number"><br><br>
-            <button type="submit">Submit</button>
+            <button type="submit" onclick="submitInfo()">Submit</button>
         </form>
     </div>
 </div>
 
+<div class="fireworks"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
 <script>
-    if (localStorage.getItem("hasSigned") === "true") {
-        document.querySelector('.header').textContent = "You have already completed the draw!";
-        document.querySelector('.prizes').style.display = "none";
-        document.getElementById("confirmBtn").style.display = "none";
-        document.getElementById("confirmationMessage").style.display = "block";
-    }
-
     const signaturePad = new SignaturePad(document.getElementById('signaturePad'));
     const confirmBtn = document.getElementById('confirmBtn');
     const confirmSignatureBtn = document.getElementById('confirmSignatureBtn');
     const signatureArea = document.getElementById('signatureArea');
     const confirmationMessage = document.getElementById('confirmationMessage');
+    const loading = document.getElementById('loading');
 
     // Start the draw process
     function startDraw() {
@@ -264,11 +298,37 @@
         if (!signaturePad.isEmpty()) {
             signatureArea.classList.add('signature-confirmed');
             setTimeout(function () {
-                localStorage.setItem("hasSigned", "true"); // Mark that user has signed
-                signatureArea.style.display = "none";
-                confirmationMessage.style.display = "block";
+                loading.style.display = "block"; // Show loading animation
+                setTimeout(() => {
+                    loading.style.display = "none"; // Hide loading animation after 2 seconds
+                    confirmationMessage.style.display = "block";
+                }, 2000);
             }, 500);
         }
+    }
+
+    // Submit Info
+    function submitInfo() {
+        confirmationMessage.style.transform = "scale(1.5)";
+        setTimeout(function () {
+            confirmationMessage.innerHTML = `
+                <h2>Congratulations! You've successfully submitted your information.</h2>
+                <p>Please screenshot this page and send it to your representative to confirm.</p>
+                <p>Good luck and become a VIP3 member soon!</p>
+                <p>${randomInspirationalQuote()}</p>
+            `;
+        }, 2000);
+    }
+
+    // Random Inspirational Quotes
+    function randomInspirationalQuote() {
+        const quotes = [
+            "Keep pushing yourself, you are unstoppable!",
+            "Believe in yourself and all that you are.",
+            "You are closer to your goals than you think.",
+            "Success is not final, failure is not fatal: It is the courage to continue that counts."
+        ];
+        return quotes[Math.floor(Math.random() * quotes.length)];
     }
 </script>
 
