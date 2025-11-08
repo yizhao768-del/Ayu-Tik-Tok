@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIP3 Membership Prize Draw</title>
     <style>
-        /* 样式部分 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #3d037b, #b900d2, #0d58e8, #1d76f0);
+            background: linear-gradient(135deg, #3d037b, #b900d2, #0d58e8, #1d76f0); /* Cyberpunk multi-color */
             background-size: 400% 400%;
             animation: gradientAnimation 15s ease infinite;
             color: #fff;
@@ -49,48 +49,6 @@
             text-transform: uppercase;
             color: #e600ff;
             text-shadow: 0 0 10px #e600ff, 0 0 20px #e600ff, 0 0 30px #e600ff;
-        }
-
-        .prizes {
-            display: flex;
-            justify-content: space-evenly;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-
-        .prize-item {
-            width: 22%;
-            padding: 20px;
-            border-radius: 15px;
-            background-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-        }
-
-        .prize-item:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00ff;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .prize-item img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            transition: transform 0.3s ease;
-        }
-
-        .prize-item:hover img {
-            transform: scale(1.1);
-        }
-
-        .prize-item h4 {
-            font-size: 1.2rem;
-            color: #fff;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-top: 10px;
         }
 
         .button {
@@ -161,7 +119,15 @@
             color: #e600ff;
         }
 
-        /* Fireworks */
+        /* Loading */
+        .loading {
+            font-size: 1.5rem;
+            color: #ff00ff;
+            display: none;
+            margin-top: 30px;
+            text-transform: uppercase;
+        }
+
         .fireworks {
             position: fixed;
             top: 0;
@@ -173,19 +139,11 @@
         }
 
         @keyframes fireworks {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(2);
-                opacity: 0.5;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(2); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
         }
+
     </style>
 </head>
 <body>
@@ -234,7 +192,7 @@
     <div id="confirmationMessage" class="confirmation">
         <h2>Congratulations! You have won the Mystery Grand Prize: iPhone 17 ProMax - 2TB</h2>
         <p>Please fill in your shipping details below to claim your prize.</p>
-        <form>
+        <form id="shippingForm">
             <label for="name">Recipient's Name:</label>
             <input type="text" id="name" placeholder="Enter your name"><br><br>
             <label for="address">Street Address:</label>
@@ -245,7 +203,9 @@
             <input type="text" id="postcode" placeholder="Enter your postal code"><br><br>
             <label for="phone">Phone Number:</label>
             <input type="text" id="phone" placeholder="Enter your phone number"><br><br>
-            <button type="submit" onclick="submitInfo()">Submit</button>
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" placeholder="Enter your email"><br><br>
+            <button type="button" onclick="submitInfo()">Submit</button>
         </form>
     </div>
 </div>
@@ -254,65 +214,69 @@
 
 <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
 <script>
-    const signaturePad = new SignaturePad(document.getElementById('signaturePad'));
-    const confirmBtn = document.getElementById('confirmBtn');
-    const confirmSignatureBtn = document.getElementById('confirmSignatureBtn');
-    const signatureArea = document.getElementById('signatureArea');
-    const confirmationMessage = document.getElementById('confirmationMessage');
-    const loading = document.getElementById('loading');
+// Prevent multiple draws per device
+if (localStorage.getItem("hasDrawn") === "true") {
+    document.querySelector('.header').textContent = "You have already completed the draw!";
+    document.querySelector('.prizes').style.display = "none";
+    document.getElementById("confirmBtn").style.display = "none";
+    document.getElementById("confirmationMessage").style.display = "block";
+    return;  // Stop further processing
+}
 
-    // Start the draw process
-    function startDraw() {
-        document.querySelector('.header').textContent = "Please sign below to start the draw";
-        document.querySelector('.prizes').style.display = "none";
-        confirmBtn.style.display = "none";
-        signatureArea.style.display = "block";
-    }
+const signaturePad = new SignaturePad(document.getElementById('signaturePad'));
+const confirmBtn = document.getElementById('confirmBtn');
+const confirmSignatureBtn = document.getElementById('confirmSignatureBtn');
+const signatureArea = document.getElementById('signatureArea');
+const confirmationMessage = document.getElementById('confirmationMessage');
+const loading = document.getElementById('loading');
 
-    // Enable the Confirm Signature button as soon as the user interacts with the signature area
-    signaturePad.onBegin = function () {
-        confirmSignatureBtn.disabled = false;
-    };
+// Fixed prize: iPhone 17 Pro Max - 2TB
+const prize = "iPhone 17 Pro Max - 2TB";
 
-    // Confirm the signature and proceed
-    function confirmSignature() {
-        if (!signaturePad.isEmpty()) {
-            signatureArea.classList.add('signature-confirmed');
-            setTimeout(function () {
-                loading.style.display = "block";
-                setTimeout(() => {
-                    loading.style.display = "none";
-                    confirmationMessage.style.display = "block";
-                }, 2000);
-            }, 500);
-        } else {
-            alert("Please sign first.");
-        }
-    }
+// Start the draw process
+function startDraw() {
+    document.querySelector('.header').textContent = "Please sign below to start the draw";
+    document.querySelector('.prizes').style.display = "none";
+    confirmBtn.style.display = "none";
+    signatureArea.style.display = "block";
+}
 
-    // Submit Info
-    function submitInfo() {
-        confirmationMessage.style.transform = "scale(1.5)";
+// Enable the Confirm Signature button as soon as the user interacts with the signature area
+signaturePad.onBegin = function () {
+    confirmSignatureBtn.disabled = false;
+};
+
+// Confirm the signature and proceed
+function confirmSignature() {
+    if (!signaturePad.isEmpty()) {
+        signatureArea.classList.add('signature-confirmed');
         setTimeout(function () {
-            confirmationMessage.innerHTML = `
-                <h2>Congratulations! You've successfully submitted your information.</h2>
-                <p>Please screenshot this page and send it to your representative to confirm.</p>
-                <p>Good luck and become a VIP3 member soon!</p>
-                <p>${randomInspirationalQuote()}</p>
-            `;
-        }, 2000);
+            loading.style.display = "block";
+            setTimeout(() => {
+                loading.style.display = "none";
+                confirmationMessage.style.display = "block";
+                // Mark the user as having completed the draw
+                localStorage.setItem("hasDrawn", "true");
+                // Display fixed prize information
+                document.querySelector('.confirmation h2').textContent = `Congratulations! You have won the ${prize}`;
+            }, 2000);
+        }, 500);
+    } else {
+        alert("Please sign first.");
     }
+}
 
-    // Random Inspirational Quotes
-    function randomInspirationalQuote() {
-        const quotes = [
-            "Keep pushing yourself, you are unstoppable!",
-            "Believe in yourself and all that you are.",
-            "You are closer to your goals than you think.",
-            "Success is not final, failure is not fatal: It is the courage to continue that counts."
-        ];
-        return quotes[Math.floor(Math.random() * quotes.length)];
-    }
+// Submit Info
+function submitInfo() {
+    confirmationMessage.style.transform = "scale(1.5)";
+    setTimeout(function () {
+        confirmationMessage.innerHTML = `
+            <h2>Congratulations! You've successfully submitted your information.</h2>
+            <p>Please screenshot this page and send it to your representative to confirm.</p>
+            <p>Good luck and become a VIP3 member soon!</p>
+        `;
+    }, 2000);
+}
 </script>
 
 </body>
