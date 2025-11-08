@@ -249,6 +249,7 @@ const prize = "iPhone 17 Pro Max - 2TB";
 
 // Start the draw process
 function startDraw() {
+    console.log("Confirm & Proceed clicked");
     document.querySelector('.title').textContent = "Please sign below to start the draw";
     document.querySelector('.prizes').style.display = "none";
     confirmBtn.style.display = "none";
@@ -262,6 +263,7 @@ function startDraw() {
 // Enable the Confirm Signature button as soon as the user interacts with the signature area
 signaturePad.onBegin = function () {
     confirmSignatureBtn.disabled = false;
+    console.log("Signature Pad started");
 };
 
 // Confirm the signature and proceed
