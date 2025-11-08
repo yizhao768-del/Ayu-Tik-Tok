@@ -7,66 +7,96 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            color: #333;
+            background: linear-gradient(135deg, #00aaff, #ffaa00);
+            animation: gradientAnimation 10s infinite alternate;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background: linear-gradient(135deg, #00aaff, #ffaa00);
+            }
+            100% {
+                background: linear-gradient(135deg, #ff0066, #cc00ff);
+            }
         }
 
         .container {
-            width: 85%;
+            width: 100%;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 50px 0;
+            padding: 50px;
             text-align: center;
+            color: #fff;
+            box-sizing: border-box;
         }
 
         .header {
-            background-color: #0052CC;
-            color: #fff;
+            background-color: rgba(0, 82, 204, 0.8);
             padding: 30px 20px;
-            border-radius: 10px;
+            border-radius: 15px;
+            margin-bottom: 50px;
+            box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.2);
         }
 
         .header h1 {
-            font-size: 2.5em;
-            letter-spacing: 1px;
+            font-size: 3em;
+            letter-spacing: 2px;
+            animation: bounceIn 1s ease-in-out;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: translateY(-100%);
+            }
+            100% {
+                transform: translateY(0);
+            }
         }
 
         .prize-container {
             display: flex;
             justify-content: space-around;
-            margin: 50px 0;
+            margin: 40px 0;
+            flex-wrap: wrap;
         }
 
         .prize-item {
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.8);
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
             width: 18%;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
         }
 
         .prize-item:hover {
             transform: scale(1.05);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
         .prize-item img {
             width: 100%;
             height: auto;
-            border-radius: 8px;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .prize-item img:hover {
+            transform: scale(1.1);
         }
 
         .prize-item h3 {
-            margin-top: 15px;
-            font-size: 1.3em;
+            margin-top: 20px;
+            font-size: 1.5em;
             color: #0052CC;
         }
 
         .prize-item p {
-            font-size: 1em;
-            color: #555;
+            font-size: 1.2em;
         }
 
         .confirm-btn {
@@ -74,15 +104,13 @@
             color: white;
             padding: 12px 24px;
             border: none;
-            border-radius: 8px;
-            font-size: 1.2em;
+            border-radius: 10px;
+            font-size: 1.5em;
             cursor: pointer;
-            margin-top: 40px;
-            transition: transform 0.3s ease;
+            transition: background-color 0.3s ease;
         }
 
         .confirm-btn:hover {
-            transform: scale(1.05);
             background-color: #003b8c;
         }
 
@@ -90,20 +118,17 @@
             display: none;
             margin-top: 50px;
             background-color: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .signature-box {
             width: 100%;
-            height: 200px;
+            height: 250px;
             border: 2px solid #ccc;
+            border-radius: 10px;
             margin-bottom: 20px;
-            border-radius: 8px;
-            transition: border-color 0.3s ease;
-            font-size: 1.2em;
-            padding: 10px;
         }
 
         .signature-box:focus {
@@ -115,14 +140,13 @@
             color: white;
             padding: 12px 24px;
             border: none;
-            border-radius: 8px;
-            font-size: 1.2em;
+            border-radius: 12px;
+            font-size: 1.5em;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: background-color 0.3s ease;
         }
 
         .start-btn:hover {
-            transform: scale(1.05);
             background-color: #218838;
         }
 
@@ -130,14 +154,20 @@
             display: none;
             background-color: #f9f9f9;
             padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             margin-top: 40px;
         }
 
         .thank-you h2 {
-            font-size: 2em;
+            font-size: 2.5em;
             color: #28a745;
+        }
+
+        .thank-you img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
         }
 
         .submit-btn {
@@ -145,15 +175,12 @@
             color: white;
             padding: 12px 24px;
             border: none;
-            border-radius: 8px;
-            font-size: 1.2em;
+            border-radius: 12px;
+            font-size: 1.5em;
             cursor: pointer;
-            margin-top: 20px;
-            transition: transform 0.3s ease;
         }
 
         .submit-btn:hover {
-            transform: scale(1.05);
             background-color: #003b8c;
         }
 
@@ -162,8 +189,8 @@
             margin-top: 20px;
             background-color: white;
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .form-container input {
@@ -212,6 +239,18 @@
                 left: random(0, 100%);
             }
         }
+
+        @media (max-width: 768px) {
+            .prize-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .prize-item {
+                width: 80%;
+                margin-bottom: 30px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -221,6 +260,7 @@
         <h1>Welcome to TikTok (UK) Winter VIP3 Lottery Event</h1>
     </div>
 
+    <!-- Prize List with Images -->
     <div class="prize-container">
         <div class="prize-item">
             <img src="path/to/your/image1.png" alt="Smart Home Set">
