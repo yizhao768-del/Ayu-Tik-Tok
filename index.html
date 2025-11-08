@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIP3 Membership Prize Draw</title>
     <style>
-        /* Base Reset */
+        /* Reset base styles */
         * {
             margin: 0;
             padding: 0;
@@ -13,98 +13,146 @@
         }
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #f5f5f5, #d8d8d8);
-            color: #333;
+            background: linear-gradient(135deg, #3d037b, #b900d2, #0d58e8, #1d76f0); /* Cyberpunk multi-color */
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            color: #fff;
             padding: 20px;
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
+
+        /* Gradient Animation */
+        @keyframes gradientAnimation {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
             text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
         }
+
         .header {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: bold;
             margin-bottom: 40px;
-            color: #222;
+            text-transform: uppercase;
+            color: #e600ff;
+            text-shadow: 0 0 10px #e600ff, 0 0 20px #e600ff, 0 0 30px #e600ff;
         }
 
         /* Prize Section */
         .prizes {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
+            justify-content: space-evenly;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
         }
+
         .prize-item {
-            width: 18%;
-            padding: 15px;
+            width: 22%;
+            padding: 20px;
             border-radius: 15px;
-            background-color: #fff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
         }
+
         .prize-item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00ff;
+            background-color: rgba(255, 255, 255, 0.2);
         }
+
         .prize-item img {
-            width: 80%;
-            margin-bottom: 20px;
+            width: 100%;
+            height: auto;
             border-radius: 10px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
         }
+
+        .prize-item:hover img {
+            transform: scale(1.1);
+        }
+
         .prize-item h4 {
             font-size: 1.2rem;
-            color: #444;
+            color: #fff;
             font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 10px;
         }
 
         /* Button Styling */
         .button {
-            background-color: #007bff;
+            background-color: #e600ff;
             color: white;
             padding: 15px 30px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1.5rem;
             cursor: pointer;
-            transition: transform 0.2s ease, background-color 0.3s ease;
+            transition: all 0.3s ease;
+            border: 2px solid #e600ff;
             margin-top: 30px;
+            text-transform: uppercase;
         }
+
         .button:hover {
             transform: scale(1.1);
-            background-color: #0056b3;
+            background-color: #ff00ff;
+            box-shadow: 0 0 20px #e600ff, 0 0 40px #e600ff;
         }
-        
+
         /* Signature Section */
         .signature-area {
             margin-top: 50px;
             display: none;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
         }
+
         .signature-pad {
             width: 100%;
             height: 250px;
-            border: 2px solid #333;
+            border: 2px solid #ff00ff;
             border-radius: 10px;
-            background-color: #fafafa;
+            background-color: rgba(255, 255, 255, 0.1);
             margin-bottom: 20px;
         }
+
         .signature-btn {
-            background-color: #28a745;
+            background-color: #00e600;
             color: white;
             font-size: 1.2rem;
             padding: 12px 25px;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-top: 20px;
         }
+
         .signature-btn:hover {
-            background-color: #218838;
+            background-color: #00b300;
         }
+
         .signature-btn:disabled {
             background-color: #6c757d;
         }
-        
+
         /* Confirmation Section */
         .confirmation {
             text-align: center;
@@ -112,9 +160,10 @@
             margin-top: 30px;
             display: none;
         }
+
         .confirmation h2 {
             font-size: 2rem;
-            color: #28a745;
+            color: #e600ff;
         }
 
         /* Signature Scaling */
@@ -122,6 +171,7 @@
             transform: scale(1);
             transition: transform 0.5s ease;
         }
+
         .signature-confirmed {
             transform: scale(1.5);
         }
@@ -135,24 +185,25 @@
     <!-- Prize Section -->
     <div class="prizes">
         <div class="prize-item">
-            <img src="data:image/jpeg;base64,{{base64 encoded image}}" alt="Smart Home Set">
-            <h4>Smart Home Set – Make your home smarter and more stylish!</h4>
+            <!-- Use actual images uploaded -->
+            <img src="data:image/jpeg;base64,{{base64_image_1}}" alt="Pixel Watch 2">
+            <h4>Pixel Watch 2 – Get smarter with this stylish smartwatch</h4>
         </div>
         <div class="prize-item">
-            <img src="data:image/jpeg;base64,{{base64 encoded image}}" alt="British Fashion Accessories">
-            <h4>British Brand Fashion Accessories – Showcase iconic British designs!</h4>
+            <img src="data:image/jpeg;base64,{{base64_image_2}}" alt="Pixel 8">
+            <h4>Pixel 8 – Capture memories with Google's flagship phone</h4>
         </div>
         <div class="prize-item">
-            <img src="data:image/jpeg;base64,{{base64 encoded image}}" alt="Premium Skincare Sets">
-            <h4>Premium Skincare Sets – Luxurious care that will make you glow!</h4>
+            <img src="data:image/jpeg;base64,{{base64_image_3}}" alt="Nest Mini">
+            <h4>Nest Mini – Smart speaker to control your home effortlessly</h4>
         </div>
         <div class="prize-item">
-            <img src="data:image/jpeg;base64,{{base64 encoded image}}" alt="Classic British Tea Set">
-            <h4>Classic British Tea Set – Enjoy authentic British tea culture!</h4>
+            <img src="data:image/jpeg;base64,{{base64_image_4}}" alt="Nest Hub">
+            <h4>Nest Hub – Visual assistant to help you at home</h4>
         </div>
         <div class="prize-item">
-            <img src="data:image/jpeg;base64,{{base64 encoded image}}" alt="Mystery Grand Prize">
-            <h4>Mystery Grand Prize – More surprise gifts to elevate your VIP status!</h4>
+            <img src="data:image/jpeg;base64,{{base64_image_5}}" alt="Chromecast">
+            <h4>Chromecast – Stream your favorite content to any screen</h4>
         </div>
     </div>
 
