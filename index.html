@@ -193,18 +193,18 @@
         <!-- Confirm Button -->
         <button class="btn" id="confirmBtn" onclick="startDraw()">Confirm & Proceed</button>
 
+        <!-- Loading Animation -->
+        <div id="loading" class="spinner" style="display: none;"></div>
+
         <!-- Signature Area -->
-        <div class="signature-area" id="signatureArea">
+        <div class="signature-area" id="signatureArea" style="display: none;">
             <h2>Please sign below to proceed with the draw</h2>
             <canvas id="signaturePad" class="signature-pad"></canvas>
             <button class="btn" id="confirmSignatureBtn" onclick="confirmSignature()" disabled>Confirm Signature</button>
         </div>
 
-        <!-- Loading Animation -->
-        <div id="loading" class="spinner"></div>
-
         <!-- Confirmation Message -->
-        <div id="confirmationMessage" class="result">
+        <div id="confirmationMessage" class="result" style="display: none;">
             <h2>Congratulations! You have won the Mystery Grand Prize: iPhone 17 ProMax - 2TB</h2>
             <p>Please fill in your shipping details below to claim your prize.</p>
             <form id="shippingForm">
@@ -252,7 +252,11 @@ function startDraw() {
     document.querySelector('.title').textContent = "Please sign below to start the draw";
     document.querySelector('.prizes').style.display = "none";
     confirmBtn.style.display = "none";
-    signatureArea.style.display = "block";
+    loading.style.display = "block"; // Show loading animation
+    setTimeout(function() {
+        loading.style.display = "none";
+        signatureArea.style.display = "block";
+    }, 2000); // 2-second wait for loading animation
 }
 
 // Enable the Confirm Signature button as soon as the user interacts with the signature area
